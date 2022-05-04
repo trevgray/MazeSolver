@@ -1,7 +1,7 @@
 #include "GameManager.h"
 #include "Window.h"
 #include "Timer.h"
-#include "Scene5.h"
+#include "MazeDisplay.h"
 #include <iostream>
 
 GameManager::GameManager() {
@@ -14,8 +14,8 @@ GameManager::GameManager() {
 
 /// In this OnCreate() method, fuction, subroutine, whatever the word, 
 bool GameManager::OnCreate() {
-	const int SCREEN_WIDTH = 1280;
-	const int SCREEN_HEIGHT = 720;
+	const int SCREEN_WIDTH = 1000;
+	const int SCREEN_HEIGHT = 1000;
 	windowPtr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (windowPtr == nullptr) {
 		OnDestroy();
@@ -32,7 +32,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene5(windowPtr->GetSDL_Window()); 
+	currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -66,7 +66,7 @@ void GameManager::Run() {
 					case SDL_SCANCODE_F10:
 						currentScene->OnDestroy();
 						delete currentScene;
-						currentScene = new Scene5(windowPtr->GetSDL_Window());
+						currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
 						currentScene->OnCreate();
 						break;
 					default:
