@@ -149,7 +149,6 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
-    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="Timer.cpp" />
