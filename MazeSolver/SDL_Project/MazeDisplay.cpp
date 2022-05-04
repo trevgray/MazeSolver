@@ -79,7 +79,8 @@ void MazeDisplay::HandleEvents(const SDL_Event& sdlEvent) {
 void MazeDisplay::Render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 	SDL_RenderClear(renderer);
-	SDL_Rect square;
+	SDL_Rect currentSquare;
+	SDL_Rect currentWall;
 	Vec3 screenCoords;
 	int w, h, windowWidth, windowHeight;
 	int currentPosX = 0, currentPosY = 0;
@@ -91,12 +92,27 @@ void MazeDisplay::Render() {
 	for (int nodeLoopWidth = 0; nodeLoopWidth < mazeSize; nodeLoopWidth++) {
 		for (int nodeLoopHeight = 0; nodeLoopHeight < mazeSize; nodeLoopHeight++) {
 			//set square for current node
-			square.x = currentPosX;
-			square.y = currentPosY;
-			square.w = nodeSizeWidth;
-			square.h = nodeSizeHeight;
+			currentSquare.x = currentPosX;
+			currentSquare.y = currentPosY;
+			currentSquare.w = nodeSizeWidth;
+			currentSquare.h = nodeSizeHeight;
 			//render the node
-			SDL_RenderCopyEx(renderer, wallTexture, nullptr, &square, 0, nullptr, SDL_FLIP_NONE);
+			/*if (currentNode == leftWall) {
+				currentWall.x = currentSquare.x;
+				currentWall.y = currentSquare.y;
+				currentWall.w = nodeSizeWidth / 10;
+				currentWall.h = currentSquare.h;
+				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}*/
+			/*if (currentNode == topWall) {
+				currentWall.x = currentSquare.x;
+				currentWall.y = currentSquare.y;
+				currentWall.w = currentSquare.w;
+				currentWall.h = nodeSizeHeight / 10;
+				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}*/
+
+			//SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
 			//set up position for next node
 			currentPosY += nodeSizeHeight;
 		}
