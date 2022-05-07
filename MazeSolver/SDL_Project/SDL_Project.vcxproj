@@ -149,6 +149,8 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="PrimsMaze.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="MazeDisplay.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -158,16 +160,23 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Body.h" />
+    <ClInclude Include="CompleteState.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="IncompleteState.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Maze.h" />
     <ClInclude Include="MMath.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="PrimsMaze.h" />
     <ClInclude Include="Randomizer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="MazeDisplay.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WorkingState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

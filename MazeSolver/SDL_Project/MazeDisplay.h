@@ -1,14 +1,11 @@
 #pragma once
-
 #include "MMath.h"
 #include "Scene.h"
 #include <SDL.h>
-#include "Ball.h"
 #include <vector>
+#include "PrimsMaze.h"
 
 using namespace MATH;
-
-#define NUM_OBJECTS 1
 
 class MazeDisplay : public Scene {
 private:
@@ -19,6 +16,7 @@ private:
 	SDL_Texture* wallTexture;
 	int mazeSize;
 
+	PrimsMaze* maze;
 public:
 	MazeDisplay(SDL_Window* sdlWindow);
 	~MazeDisplay();

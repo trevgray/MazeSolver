@@ -6,7 +6,7 @@
 #include "VMath.h"
 using namespace MATH;
 
-MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : mazeSize(0), wallTexture(nullptr) {
+MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : mazeSize(0), wallTexture(nullptr), maze(nullptr) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -16,7 +16,20 @@ MazeDisplay::~MazeDisplay() {
 }
 
 bool MazeDisplay::OnCreate() {
+	//Maze Stuff
 	mazeSize = 10;
+	maze = new PrimsMaze(mazeSize);
+
+	/*for (int x = 0; x < mazeSize; x++) {
+		for (int y = 0; y < mazeSize; y++) {
+			maze->nodeArray[x][y].leftWall = true;
+			maze->nodeArray[x][y].topWall = true;
+			maze->nodeArray[x][y].bottomWall = true;
+			maze->nodeArray[x][y].rightWall = true;
+		}
+	}*/
+
+	//SDL Stuff
 	int w, h;
 	float xAxis = 15.0f;
 	float yAxis = 7.5f;
@@ -82,7 +95,7 @@ void MazeDisplay::Render() {
 	SDL_Rect currentSquare;
 	SDL_Rect currentWall;
 	Vec3 screenCoords;
-	int w, h, windowWidth, windowHeight;
+	int windowWidth, windowHeight;
 	int currentPosX = 0, currentPosY = 0;
 	//getting node size on screen
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -97,22 +110,34 @@ void MazeDisplay::Render() {
 			currentSquare.w = nodeSizeWidth;
 			currentSquare.h = nodeSizeHeight;
 			//render the node
-			/*if (currentNode == leftWall) {
+			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].leftWall == true) {
 				currentWall.x = currentSquare.x;
 				currentWall.y = currentSquare.y;
 				currentWall.w = nodeSizeWidth / 10;
 				currentWall.h = currentSquare.h;
 				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
-			}*/
-			/*if (currentNode == topWall) {
+			}
+			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].topWall == true) {
 				currentWall.x = currentSquare.x;
 				currentWall.y = currentSquare.y;
 				currentWall.w = currentSquare.w;
 				currentWall.h = nodeSizeHeight / 10;
 				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
-			}*/
-
-			//SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}
+			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].rightWall == true) {
+				currentWall.x = currentSquare.x + nodeSizeWidth;
+				currentWall.y = currentSquare.y;
+				currentWall.w = -nodeSizeWidth / 10;
+				currentWall.h = currentSquare.h;
+				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}
+			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].bottomWall == true) {
+				currentWall.x = currentSquare.x;
+				currentWall.y = currentSquare.y + nodeSizeHeight;
+				currentWall.w = currentSquare.w;
+				currentWall.h = -nodeSizeHeight / 10;
+				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}
 			//set up position for next node
 			currentPosY += nodeSizeHeight;
 		}
