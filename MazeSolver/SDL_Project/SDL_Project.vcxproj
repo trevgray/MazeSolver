@@ -160,9 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Body.h" />
-    <ClInclude Include="CompleteState.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="IncompleteState.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Maze.h" />
     <ClInclude Include="MMath.h" />
@@ -176,7 +174,6 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="WorkingState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

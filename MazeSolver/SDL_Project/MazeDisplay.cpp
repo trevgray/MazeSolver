@@ -17,9 +17,9 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	mazeSize = 10;
+	mazeSize = 25;
 	maze = new PrimsMaze(mazeSize);
-
+	maze->Generate(mazeSize);
 	/*for (int x = 0; x < mazeSize; x++) {
 		for (int y = 0; y < mazeSize; y++) {
 			maze->nodeArray[x][y].leftWall = true;
@@ -76,6 +76,7 @@ bool MazeDisplay::OnCreate() {
 void MazeDisplay::OnDestroy() {
 	/// We really need to deal with the textures better, they are left dangling right now
 	SDL_DestroyRenderer(renderer);
+	delete maze;
 }
 
 void MazeDisplay::Update(const float deltaTime) {

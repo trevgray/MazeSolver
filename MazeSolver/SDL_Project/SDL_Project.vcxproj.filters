@@ -128,15 +128,6 @@
     <ClInclude Include="State.h">
       <Filter>Header Files\Maze\Node</Filter>
     </ClInclude>
-    <ClInclude Include="IncompleteState.h">
-      <Filter>Header Files\Maze\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="CompleteState.h">
-      <Filter>Header Files\Maze\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkingState.h">
-      <Filter>Header Files\Maze\Node</Filter>
-    </ClInclude>
     <ClInclude Include="PrimsMaze.h">
       <Filter>Header Files\Maze</Filter>
     </ClInclude>
