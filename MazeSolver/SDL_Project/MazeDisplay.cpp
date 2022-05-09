@@ -17,17 +17,13 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	mazeSize = 25;
+	mazeSize = 3;
 	maze = new PrimsMaze(mazeSize);
 	maze->Generate(mazeSize);
-	/*for (int x = 0; x < mazeSize; x++) {
-		for (int y = 0; y < mazeSize; y++) {
-			maze->nodeArray[x][y].leftWall = true;
-			maze->nodeArray[x][y].topWall = true;
-			maze->nodeArray[x][y].bottomWall = true;
-			maze->nodeArray[x][y].rightWall = true;
-		}
-	}*/
+
+
+	std::cout << "bottom wall:" << maze->nodeArray[0][0].bottomWall << " top wall:" << maze->nodeArray[0][0].topWall << " left wall:" << maze->nodeArray[0][0].leftWall << " right wall:" << maze->nodeArray[0][0].rightWall << std::endl;
+	
 
 	//SDL Stuff
 	int w, h;
