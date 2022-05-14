@@ -4,7 +4,7 @@ class Maze {
 public:
 	//Maze();
 	//Maze(int n);
-	Node nodeArray[100][100];
+	Node nodeArray[50][50];
 	int mazeSize;
 	virtual void Generate(int n) = 0;
 };

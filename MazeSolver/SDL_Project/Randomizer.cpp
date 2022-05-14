@@ -24,6 +24,11 @@ Randomizer::~Randomizer(){
 	qd2idnum = 0;
 }
 
+void Randomizer::GenerateSeed() {
+	seed = static_cast<long>(time(nullptr));
+	ran1idnum = -seed;
+	qd2idnum = -seed;
+}
 
 double Randomizer::rand(const double low, const double high){
 	return (static_cast<double>(ran1())*(high - low)) + low;

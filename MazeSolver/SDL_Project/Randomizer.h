@@ -22,6 +22,8 @@ public:
 
 	~Randomizer();
 
+	void GenerateSeed();
+
 	/// Generate numbers between the low (smallest) and high values
 	double rand(const double low, const double high);
 
