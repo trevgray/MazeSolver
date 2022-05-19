@@ -34,11 +34,13 @@ void Window::OnDestroy(){
 	/// Kill the surface first
 	if (screenSurface) {
 		SDL_FreeSurface(screenSurface);
+		delete screenSurface;
 	}
 
 	/// Now kill the window
 	if (window){
 		SDL_DestroyWindow(window);
+		delete window;
 	}
 	
 	///Exit the SDL subsystems

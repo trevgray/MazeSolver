@@ -1,11 +1,13 @@
 #pragma once
 #include "Node.h"
 class Maze {
-public:
-	//Maze();
-	//Maze(int n);
-	Node nodeArray[50][50];
+protected:
 	int mazeSize;
-	virtual void Generate(int n) = 0;
+public:
+	Node nodeArray[50][50];
+	virtual void Generate() = 0;
+	int GetSize() {
+		return mazeSize;
+	}
 };
 

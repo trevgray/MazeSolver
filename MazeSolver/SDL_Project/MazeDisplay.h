@@ -14,7 +14,6 @@ private:
 	Matrix4 invProjectionMatrix;
 	SDL_Renderer* renderer;
 	SDL_Texture* wallTexture;
-	int mazeSize;
 
 	PrimsMaze* maze;
 public:

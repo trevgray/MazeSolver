@@ -12,7 +12,7 @@ PrimsMaze::PrimsMaze() {
 }
 
 PrimsMaze::PrimsMaze(int n) {
-	mazeSize = n;
+	mazeSize = n; //generate the maze
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -20,121 +20,94 @@ PrimsMaze::PrimsMaze(int n) {
 	}
 }
 
-void PrimsMaze::Generate(int n) {
+void PrimsMaze::Generate() {
+	srand((unsigned int)time(NULL));
 	bool frontierLoop = true;
-	MATH::Randomizer r;
 	//mark random node
-	//int x = r.rand(0, n);
-	int x = rand() % n;
-	//r.GenerateSeed();
-	//int y = r.rand(0, n);
-	int y = rand() % n;
+	int x = rand() % mazeSize;
+	int y = rand() % mazeSize;
 	MarkNode(nodeArray[x][y]);
-	while (frontierLoop == true) { //we need a frontier list
+	while (frontierLoop == true) {
 		//get random frontier node
-		//r.GenerateSeed();
-		//int randomFrontierIndex = r.rand(0, frontier.size());
 		int randomFrontierIndex = rand() % frontier.size();
 		Node randomFrontier = frontier[randomFrontierIndex];
-		frontier.erase(frontier.begin() + randomFrontierIndex);
-		//get random neightbors of frontier node
-		std::vector<Node> incompleteNeightbors = NeighborNodes(randomFrontier, true);
-		if (incompleteNeightbors.size() > 0) {
-			//r.GenerateSeed();
-			//int randomNeightborsIndex = r.rand(0, incompleteNeightbors.size());
+		frontier.erase(frontier.begin() + randomFrontierIndex); //erase it from the frontier array
+		//get a random neighbor of frontier node
+		std::vector<Node> incompleteNeightbors = NeighborNodes(randomFrontier, 0);
+		if (incompleteNeightbors.size() > 0) { //if not neighbors - move on
 			int randomNeightborsIndex = rand() % incompleteNeightbors.size();
 			Node randomNeightbor = incompleteNeightbors[randomNeightborsIndex];
 		}
+		//set the node walls
 		SetNodeWalls(randomFrontier);
+		//mark the node as done
 		MarkNode(nodeArray[randomFrontier.x][randomFrontier.y]);
 		if (frontier.size() == 0) {
-			frontierLoop = false;
+			frontierLoop = false; //exit if the frontier vector is empty
 		}
 	}
 }
 
 void PrimsMaze::MarkNode(Node markedNode) {
 	//std::cout << "finished marked: " << markedNode.x << " " << markedNode.y << std::endl;
-	Node usingNode = markedNode;
-	//std::cout << "finished using: " << markedNode.x << " " << markedNode.y << std::endl;
-	nodeArray[usingNode.x][usingNode.y].nodeState.SetState(2);
-	if (markedNode.x - 1 != -1) {
-		addFrontier(nodeArray[usingNode.x - 1][usingNode.y]);
+	nodeArray[markedNode.x][markedNode.y].nodeState.SetState(2); //mark the node as done
+	if (markedNode.x - 1 != -1) { //if the location will be outside the maze in the -x direction
+		addFrontier(nodeArray[markedNode.x - 1][markedNode.y]);
 	}
-	if (markedNode.x + 1 < mazeSize) {
-		addFrontier(nodeArray[usingNode.x + 1][usingNode.y]);
+	if (markedNode.x + 1 < mazeSize) { //if the location will be outside the maze in the +x direction
+		addFrontier(nodeArray[markedNode.x + 1][markedNode.y]);
 	}
-	if (markedNode.y - 1 != -1) {
-		addFrontier(nodeArray[usingNode.x][usingNode.y - 1]);
+	if (markedNode.y - 1 != -1) { //if the location will be outside the maze in the -y direction
+		addFrontier(nodeArray[markedNode.x][markedNode.y - 1]);
 	}
-	if (markedNode.y + 1 < mazeSize) {
-		addFrontier(nodeArray[usingNode.x][usingNode.y + 1]);
+	if (markedNode.y + 1 < mazeSize) { //if the location will be outside the maze in the +y direction
+		addFrontier(nodeArray[markedNode.x][markedNode.y + 1]);
 	}
 }
 
-std::vector<Node> PrimsMaze::NeighborNodes(Node markedNode, bool function) {
-	std::vector<Node> neighbors;
-	if (function == true) { //if function = true - find any incomplete or working neighbors
-		if (markedNode.x - 1 >= 0 && nodeArray[markedNode.x - 1][markedNode.y].nodeState.GetState() == 0) {
-			neighbors.push_back(nodeArray[markedNode.x - 1][markedNode.y]);
-		}
-		if (markedNode.x + 1 < mazeSize && nodeArray[markedNode.x + 1][markedNode.y].nodeState.GetState() == 0) {
-			neighbors.push_back(nodeArray[markedNode.x + 1][markedNode.y]);
-		}
-		if (markedNode.y - 1 >= 0 && nodeArray[markedNode.x][markedNode.y - 1].nodeState.GetState() == 0) {
-			neighbors.push_back(nodeArray[markedNode.x][markedNode.y - 1]);
-		}
-		if (markedNode.y + 1 < mazeSize && nodeArray[markedNode.x][markedNode.y + 1].nodeState.GetState() == 0) {
-			neighbors.push_back(nodeArray[markedNode.x][markedNode.y + 1]);
-		}
+std::vector<Node> PrimsMaze::NeighborNodes(Node markedNode, int function) {
+	std::vector<Node> neighbors; //declare a array of neighbors
+	if (markedNode.x - 1 >= 0 && nodeArray[markedNode.x - 1][markedNode.y].nodeState.GetState() == function) { //check if the neigbor is vaild then get the neighbor to the -x direction
+		neighbors.push_back(nodeArray[markedNode.x - 1][markedNode.y]);
 	}
-	else { //if function = false - find only complete neighbors
-		if (markedNode.x - 1 >= 0 && (nodeArray[markedNode.x - 1][markedNode.y].nodeState.GetState() == 2)) {
-			neighbors.push_back(nodeArray[markedNode.x - 1][markedNode.y]);
-		}
-		if (markedNode.x + 1 < mazeSize && nodeArray[markedNode.x + 1][markedNode.y].nodeState.GetState() == 2) {
-			neighbors.push_back(nodeArray[markedNode.x + 1][markedNode.y]);
-		}
-		if (markedNode.y - 1 >= 0 && nodeArray[markedNode.x][markedNode.y - 1].nodeState.GetState() == 2) {
-			neighbors.push_back(nodeArray[markedNode.x][markedNode.y - 1]);
-		}
-		if (markedNode.y + 1 < mazeSize && nodeArray[markedNode.x][markedNode.y + 1].nodeState.GetState() == 2) {
-			neighbors.push_back(nodeArray[markedNode.x][markedNode.y + 1]);
-		}
+	if (markedNode.x + 1 < mazeSize && nodeArray[markedNode.x + 1][markedNode.y].nodeState.GetState() == function) { //check if the neigbor is vaild then get the neighbor to the +x direction
+		neighbors.push_back(nodeArray[markedNode.x + 1][markedNode.y]);
+	}
+	if (markedNode.y - 1 >= 0 && nodeArray[markedNode.x][markedNode.y - 1].nodeState.GetState() == function) { //check if the neigbor is vaild then get the neighbor to the -y direction
+		neighbors.push_back(nodeArray[markedNode.x][markedNode.y - 1]);
+	}
+	if (markedNode.y + 1 < mazeSize && nodeArray[markedNode.x][markedNode.y + 1].nodeState.GetState() == function) { //check if the neigbor is vaild then get the neighbor to the +y direction
+		neighbors.push_back(nodeArray[markedNode.x][markedNode.y + 1]);
 	}
 	return neighbors;
 }
 
 void PrimsMaze::addFrontier(Node addedNode) {
-	//std::cout << "frontier: " << addedNode.x << " " << addedNode.y << std::endl;
-	if (addedNode.x >= 0 && addedNode.y >= 0 && addedNode.y < mazeSize && addedNode.x < mazeSize && nodeArray[addedNode.x][addedNode.y].nodeState.GetState() == 0) {
-		nodeArray[addedNode.x][addedNode.y].nodeState.SetState(1);
-		frontier.push_back(nodeArray[addedNode.x][addedNode.y]);
+	if (addedNode.x >= 0 && addedNode.y >= 0 && addedNode.y < mazeSize && addedNode.x < mazeSize && nodeArray[addedNode.x][addedNode.y].nodeState.GetState() == 0) { //check if the node is inside the maze
+		nodeArray[addedNode.x][addedNode.y].nodeState.SetState(1); //set it to working
+		frontier.push_back(nodeArray[addedNode.x][addedNode.y]); //add to frontier array
 		//std::cout << "frontier: " << addedNode.x << " " << addedNode.y << std::endl;
 	}
 }
 
 void PrimsMaze::SetNodeWalls(Node markedNode) {
-	MATH::Randomizer r;
-	std::vector<Node> completeNeightbors = NeighborNodes(markedNode, false);
-	if (completeNeightbors.size() > 0) {
-		//r.GenerateSeed();
-		//int randomNeightborsIndex = r.rand(0, completeNeightbors.size());
+	std::vector<Node> completeNeightbors = NeighborNodes(markedNode, 2); //get complete neighbors
+	if (completeNeightbors.size() > 0) { //if empty don't do anything - only applies to the first node
 		int randomNeightborsIndex = rand() % completeNeightbors.size();
-		Node randomNeightbor = completeNeightbors[randomNeightborsIndex];
-		if (randomNeightbor.x < markedNode.x) {
+		Node randomNeightbor = completeNeightbors[randomNeightborsIndex]; //get random complete neighbor
+		if (randomNeightbor.x < markedNode.x) { //if the complete neighbor is to the left of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].leftWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].rightWall = false;
 		}
-		if (randomNeightbor.x > markedNode.x) {
+		if (randomNeightbor.x > markedNode.x) { //if the complete neighbor is to the right of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].rightWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].leftWall = false;
 		}
-		if (randomNeightbor.y < markedNode.y) {
+		if (randomNeightbor.y < markedNode.y) { //if the complete neighbor is to the top of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].topWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].bottomWall = false;
 		}
-		if (randomNeightbor.y > markedNode.y) {
+		if (randomNeightbor.y > markedNode.y) { //if the complete neighbor is to the bottom of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].bottomWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].topWall = false;
 		}

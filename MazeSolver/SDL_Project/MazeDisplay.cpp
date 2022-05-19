@@ -6,7 +6,7 @@
 #include "VMath.h"
 using namespace MATH;
 
-MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : mazeSize(0), wallTexture(nullptr), maze(nullptr) {
+MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : wallTexture(nullptr), maze(nullptr) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -17,14 +17,9 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	mazeSize = 50;
-	maze = new PrimsMaze(mazeSize);
-	maze->Generate(mazeSize);
-
-
-	//std::cout << "bottom wall:" << maze->nodeArray[0][0].bottomWall << " top wall:" << maze->nodeArray[0][0].topWall << " left wall:" << maze->nodeArray[0][0].leftWall << " right wall:" << maze->nodeArray[0][0].rightWall << std::endl;
+	maze = new PrimsMaze(50);
+	maze->Generate();
 	
-
 	//SDL Stuff
 	int w, h;
 	float xAxis = 15.0f;
@@ -45,34 +40,27 @@ bool MazeDisplay::OnCreate() {
 		return false;
 	}
 	else {
-		/// Do some tricks with the image coords
+		//Do some tricks with the image coords
 		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
 		Vec3 lowerRight(static_cast<float>(wallImage->w), static_cast<float>(wallImage->h), 0.0f);
 		Vec3 ulWorld = invProjectionMatrix * upperLeft;
 		Vec3 lrWorld = invProjectionMatrix * lowerRight;
 		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
-		///float r = worldCoordsFromScreenCoords.x / 2.0f;
+		//float r = worldCoordsFromScreenCoords.x / 2.0f;
 		SDL_FreeSurface(wallImage);
-
+		wallImage = NULL;
+		delete wallImage;
 	}
-
-	SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 1024, 1024);
-	unsigned char* pixels;
-	int pitch;
-	SDL_LockTexture(texture, NULL, (void**)&pixels, &pitch);
-	// set pixels to solid white
-	for (int i = 0; i < pitch * 1024; i++) {
-		pixels[i] = 255;
-	}
-	SDL_UnlockTexture(texture);
 
 	return true;
 }
 
 void MazeDisplay::OnDestroy() {
-	/// We really need to deal with the textures better, they are left dangling right now
 	SDL_DestroyRenderer(renderer);
+	delete wallTexture;
 	delete maze;
+	delete renderer;
+	delete window;
 }
 
 void MazeDisplay::Update(const float deltaTime) {
@@ -96,11 +84,11 @@ void MazeDisplay::Render() {
 	int currentPosX = 0, currentPosY = 0;
 	//getting node size on screen
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-	int nodeSizeWidth = windowWidth / mazeSize;
-	int nodeSizeHeight = windowHeight / mazeSize;
+	int nodeSizeWidth = windowWidth / maze->GetSize();
+	int nodeSizeHeight = windowHeight / maze->GetSize();
 	//displaying the nodes
-	for (int nodeLoopWidth = 0; nodeLoopWidth < mazeSize; nodeLoopWidth++) {
-		for (int nodeLoopHeight = 0; nodeLoopHeight < mazeSize; nodeLoopHeight++) {
+	for (int nodeLoopWidth = 0; nodeLoopWidth < maze->GetSize(); nodeLoopWidth++) {
+		for (int nodeLoopHeight = 0; nodeLoopHeight < maze->GetSize(); nodeLoopHeight++) {
 			//set square for current node
 			currentSquare.x = currentPosX;
 			currentSquare.y = currentPosY;
