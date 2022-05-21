@@ -18,6 +18,10 @@ PrimsMaze::PrimsMaze(int n) {
 			nodeArray[x][y] = Node(x, y);
 		}
 	}
+	MazeGraph = new Graph<int>(n * n);
+	for (int x = 0; x < n * n; x++) {
+		MazeGraph->push(x);
+	}
 }
 
 void PrimsMaze::Generate() {
@@ -98,18 +102,26 @@ void PrimsMaze::SetNodeWalls(Node markedNode) {
 		if (randomNeightbor.x < markedNode.x) { //if the complete neighbor is to the left of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].leftWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].rightWall = false;
+			//update the graph
+			MazeGraph->attachEdge(markedNode.x + markedNode.y, randomNeightbor.x + randomNeightbor.y);
 		}
 		if (randomNeightbor.x > markedNode.x) { //if the complete neighbor is to the right of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].rightWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].leftWall = false;
+			//update the graph
+			MazeGraph->attachEdge(randomNeightbor.x + randomNeightbor.y, markedNode.x + markedNode.y);
 		}
 		if (randomNeightbor.y < markedNode.y) { //if the complete neighbor is to the top of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].topWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].bottomWall = false;
+			//update the graph
+			MazeGraph->attachEdge(markedNode.x + markedNode.y, randomNeightbor.x + randomNeightbor.y);
 		}
 		if (randomNeightbor.y > markedNode.y) { //if the complete neighbor is to the bottom of the node - remove the walls between the nodes
 			nodeArray[markedNode.x][markedNode.y].bottomWall = false;
 			nodeArray[randomNeightbor.x][randomNeightbor.y].topWall = false;
+			//update the graph
+			MazeGraph->attachEdge(randomNeightbor.x + randomNeightbor.y, markedNode.x + markedNode.y);
 		}
 	}
 }

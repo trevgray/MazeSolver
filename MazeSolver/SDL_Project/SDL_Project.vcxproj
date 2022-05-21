@@ -161,6 +161,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Graphs.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Maze.h" />
     <ClInclude Include="MMath.h" />

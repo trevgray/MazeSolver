@@ -20,6 +20,22 @@ bool MazeDisplay::OnCreate() {
 	maze = new PrimsMaze(50);
 	maze->Generate();
 	
+	//Graph Stuff
+	cout << "DepthFirstSearch Nodes Visited: ";
+
+	int result = maze->MazeGraph->depthFirstSearch(0, 100);
+
+	if (result == 1)
+		cout << "Path found!";
+	else
+		cout << "Path NOT found!";
+
+	cout << endl << endl;
+
+	for (int x = 0; x < maze->MazeGraph->Path.size(); x++) {
+		cout << maze->MazeGraph->Path[x] << endl;
+	}
+
 	//SDL Stuff
 	int w, h;
 	float xAxis = 15.0f;

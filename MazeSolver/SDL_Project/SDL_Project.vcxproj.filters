@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Maze\Node">
       <UniqueIdentifier>{efdd4f15-21fa-422d-8581-bb1e7dec7986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SolvingAlgorithm">
+      <UniqueIdentifier>{600a8cef-1190-414e-b753-d54e6df1fcab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="PrimsMaze.h">
       <Filter>Header Files\Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphs.h">
+      <Filter>Header Files\SolvingAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
