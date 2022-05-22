@@ -17,40 +17,42 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	maze = new PrimsMaze(50);
+	maze = new PrimsMaze(10);
 	maze->Generate();
+
+	maze->nodeArray[0][0].traversed = true;
 	
 	//SDL Stuff
 	int w, h;
 	float xAxis = 15.0f;
 	float yAxis = 7.5f;
 	SDL_GetWindowSize(window, &w, &h);
-
+	//projection matrices
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(-xAxis, xAxis, -yAxis, yAxis, 0.0f, 1.0f);
 	projectionMatrix = ndc * ortho;
 	invProjectionMatrix = MMath::inverse(projectionMatrix);
-
+	//wall texture
 	IMG_Init(IMG_INIT_PNG);
-	SDL_Surface* wallImage = IMG_Load("white.png");
-	wallTexture = SDL_CreateTextureFromSurface(renderer, wallImage);
+	SDL_Surface* tempTexture;
+	tempTexture = IMG_Load("white.png");
+	wallTexture = SDL_CreateTextureFromSurface(renderer, tempTexture);
 	if (wallTexture == nullptr) printf("%s\n", SDL_GetError());
-	if (wallImage == nullptr) {
+	if (tempTexture == nullptr) {
 		std::cerr << "Can't open the image" << std::endl;
 		return false;
 	}
-	else {
-		//Do some tricks with the image coords
-		Vec3 upperLeft(0.0f, 0.0f, 0.0f);
-		Vec3 lowerRight(static_cast<float>(wallImage->w), static_cast<float>(wallImage->h), 0.0f);
-		Vec3 ulWorld = invProjectionMatrix * upperLeft;
-		Vec3 lrWorld = invProjectionMatrix * lowerRight;
-		Vec3 worldCoordsFromScreenCoords = lrWorld - ulWorld;
-		//float r = worldCoordsFromScreenCoords.x / 2.0f;
-		SDL_FreeSurface(wallImage);
-		wallImage = NULL;
-		delete wallImage;
+	//traversed texture
+	tempTexture = IMG_Load("green.png");
+	traversedTexture = SDL_CreateTextureFromSurface(renderer, tempTexture);
+	if (traversedTexture == nullptr) printf("%s\n", SDL_GetError());
+	if (tempTexture == nullptr) {
+		std::cerr << "Can't open the image" << std::endl;
+		return false;
 	}
+	SDL_FreeSurface(tempTexture);
+	tempTexture = NULL;
+	delete tempTexture;
 
 	return true;
 }
@@ -58,6 +60,7 @@ bool MazeDisplay::OnCreate() {
 void MazeDisplay::OnDestroy() {
 	SDL_DestroyRenderer(renderer);
 	delete wallTexture;
+	delete traversedTexture;
 	delete maze;
 	delete renderer;
 	delete window;
@@ -95,6 +98,15 @@ void MazeDisplay::Render() {
 			currentSquare.w = nodeSizeWidth;
 			currentSquare.h = nodeSizeHeight;
 			//render the node
+			//check if the node is traversed
+			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].traversed == true) {
+				currentWall.x = currentSquare.x + (nodeSizeWidth / 3);
+				currentWall.y = currentSquare.y + (nodeSizeHeight / 3);
+				currentWall.w = currentSquare.w / 3;
+				currentWall.h = currentSquare.h / 3;
+				SDL_RenderCopyEx(renderer, traversedTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
+			}
+			//add left wall
 			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].leftWall == true) {
 				currentWall.x = currentSquare.x;
 				currentWall.y = currentSquare.y;
@@ -102,6 +114,7 @@ void MazeDisplay::Render() {
 				currentWall.h = currentSquare.h;
 				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
 			}
+			//add top wall
 			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].topWall == true) {
 				currentWall.x = currentSquare.x;
 				currentWall.y = currentSquare.y;
@@ -109,6 +122,7 @@ void MazeDisplay::Render() {
 				currentWall.h = nodeSizeHeight / 10;
 				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
 			}
+			//add right wall
 			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].rightWall == true) {
 				currentWall.x = currentSquare.x + nodeSizeWidth;
 				currentWall.y = currentSquare.y;
@@ -116,6 +130,7 @@ void MazeDisplay::Render() {
 				currentWall.h = currentSquare.h;
 				SDL_RenderCopyEx(renderer, wallTexture, nullptr, &currentWall, 0, nullptr, SDL_FLIP_NONE);
 			}
+			//add bottom wall
 			if (maze->nodeArray[nodeLoopWidth][nodeLoopHeight].bottomWall == true) {
 				currentWall.x = currentSquare.x;
 				currentWall.y = currentSquare.y + nodeSizeHeight;

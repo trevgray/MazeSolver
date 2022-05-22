@@ -13,9 +13,9 @@ private:
 	Matrix4 projectionMatrix;
 	Matrix4 invProjectionMatrix;
 	SDL_Renderer* renderer;
-	SDL_Texture* wallTexture;
+	SDL_Texture* wallTexture, *traversedTexture;
 
-	PrimsMaze* maze;
+	Maze* maze;
 public:
 	MazeDisplay(SDL_Window* sdlWindow);
 	~MazeDisplay();

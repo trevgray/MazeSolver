@@ -1,5 +1,12 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (SDL_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Window.cpp
-E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Window.cpp(43,16): warning C4150: deletion of pointer to incomplete type 'SDL_Window'; no destructor called
-E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Window.h(4): message : see declaration of 'SDL_Window'
+  MazeDisplay.cpp
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Randomizer.h(58,40): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\MazeDisplay.cpp(62,20): warning C4150: deletion of pointer to incomplete type 'SDL_Texture'; no destructor called
+C:\GameDev\SDL\include\SDL_render.h(127): message : see declaration of 'SDL_Texture'
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\MazeDisplay.cpp(63,25): warning C4150: deletion of pointer to incomplete type 'SDL_Texture'; no destructor called
+C:\GameDev\SDL\include\SDL_render.h(127): message : see declaration of 'SDL_Texture'
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\MazeDisplay.cpp(65,17): warning C4150: deletion of pointer to incomplete type 'SDL_Renderer'; no destructor called
+C:\GameDev\SDL\include\SDL_render.h(121): message : see declaration of 'SDL_Renderer'
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\MazeDisplay.cpp(66,15): warning C4150: deletion of pointer to incomplete type 'SDL_Window'; no destructor called
+C:\GameDev\SDL\include\SDL_video.h(90): message : see declaration of 'SDL_Window'
   SDL_Project.vcxproj -> E:\GitHub\MazeSolver\MazeSolver\Debug\MazeSolver.exe

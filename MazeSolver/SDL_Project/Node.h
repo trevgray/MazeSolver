@@ -9,6 +9,7 @@ public:
 	bool leftWall;
 	bool rightWall;
 	State nodeState;
+	bool traversed;
 	Node();
 	Node(int x_, int y_);
 };
