@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <vector>
 #include "PrimsMaze.h"
+#include "DepthFirstSearch.h"
 
 using namespace MATH;
 
@@ -16,6 +17,7 @@ private:
 	SDL_Texture* wallTexture, *traversedTexture;
 
 	Maze* maze;
+	SolvingAlgorithm* algorithm;
 public:
 	MazeDisplay(SDL_Window* sdlWindow);
 	~MazeDisplay();

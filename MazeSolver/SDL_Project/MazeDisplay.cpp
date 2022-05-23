@@ -6,7 +6,7 @@
 #include "VMath.h"
 using namespace MATH;
 
-MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : wallTexture(nullptr), maze(nullptr) {
+MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : wallTexture(nullptr), maze(nullptr), algorithm(nullptr), traversedTexture(nullptr) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
@@ -17,10 +17,11 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	maze = new PrimsMaze(10);
+	maze = new PrimsMaze(50);
 	maze->Generate();
 
-	maze->nodeArray[0][0].traversed = true;
+	algorithm = new DepthFirstSearch();
+	algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0);
 	
 	//SDL Stuff
 	int w, h;
@@ -60,6 +61,7 @@ bool MazeDisplay::OnCreate() {
 void MazeDisplay::OnDestroy() {
 	SDL_DestroyRenderer(renderer);
 	delete wallTexture;
+	delete algorithm;
 	delete traversedTexture;
 	delete maze;
 	delete renderer;

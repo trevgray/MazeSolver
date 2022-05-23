@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Maze\Node">
       <UniqueIdentifier>{efdd4f15-21fa-422d-8581-bb1e7dec7986}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SolvingAlgorithms">
+      <UniqueIdentifier>{a0177b6b-f053-40b6-82eb-ae321e38ce0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SolvingAlgorithms">
+      <UniqueIdentifier>{5f644843-f14b-4db0-b236-a85480f28cc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -80,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="PrimsMaze.cpp">
       <Filter>Source Files\Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthFirstSearch.cpp">
+      <Filter>Source Files\SolvingAlgorithms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="PrimsMaze.h">
       <Filter>Header Files\Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="SolvingAlgorithm.h">
+      <Filter>Header Files\SolvingAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthFirstSearch.h">
+      <Filter>Header Files\SolvingAlgorithms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

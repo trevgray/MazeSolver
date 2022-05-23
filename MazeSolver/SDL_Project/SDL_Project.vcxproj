@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="DepthFirstSearch.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Body.h" />
+    <ClInclude Include="DepthFirstSearch.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Maze.h" />
@@ -169,6 +171,7 @@
     <ClInclude Include="Randomizer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="MazeDisplay.h" />
+    <ClInclude Include="SolvingAlgorithm.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />
