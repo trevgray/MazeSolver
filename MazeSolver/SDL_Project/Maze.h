@@ -4,6 +4,7 @@ class Maze {
 protected:
 	int mazeSize;
 public:
+	bool mazeDone;
 	Node nodeArray[100][100];
 	virtual void Generate() = 0;
 	int GetSize() {

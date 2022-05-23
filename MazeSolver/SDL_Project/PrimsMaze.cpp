@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cstdlib>
 PrimsMaze::PrimsMaze() {
+	startX = startY = 0;
+	mazeDone = false;
+	frontierLoop = true;
 	mazeSize = 5;
 	for (int x = 0; x < 5; x++) {
 		for (int y = 0; y < 5; y++) {
@@ -12,6 +15,9 @@ PrimsMaze::PrimsMaze() {
 }
 
 PrimsMaze::PrimsMaze(int n) {
+	startX = startY = 0;
+	mazeDone = false;
+	frontierLoop = true;
 	mazeSize = n; //generate the maze
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
@@ -21,13 +27,13 @@ PrimsMaze::PrimsMaze(int n) {
 }
 
 void PrimsMaze::Generate() {
-	srand((unsigned int)time(NULL));
-	bool frontierLoop = true;
-	//mark random node
-	int x = rand() % mazeSize;
-	int y = rand() % mazeSize;
-	MarkNode(nodeArray[x][y]);
+	//srand((unsigned int)time(NULL));
 	while (frontierLoop == true) {
+		if (frontier.size() == 0) {
+			frontierLoop = false; //exit if the frontier vector is empty
+			mazeDone = true;
+			return;
+		}
 		//get random frontier node
 		int randomFrontierIndex = rand() % frontier.size();
 		Node randomFrontier = frontier[randomFrontierIndex];
@@ -42,9 +48,7 @@ void PrimsMaze::Generate() {
 		SetNodeWalls(randomFrontier);
 		//mark the node as done
 		MarkNode(nodeArray[randomFrontier.x][randomFrontier.y]);
-		if (frontier.size() == 0) {
-			frontierLoop = false; //exit if the frontier vector is empty
-		}
+		return;
 	}
 }
 

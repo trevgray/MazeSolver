@@ -1,46 +1,53 @@
 #include "DepthFirstSearch.h"
-#include <stack>
 #include <iostream>
 
-void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY, int endVertexX, int endVertexY) {
-	srand((unsigned int)time(NULL));
-	maze = maze_;
-	// Set the startIndex to visited
-	maze->nodeArray[startVertexX][startVertexY].nodeState.SetState(3);
-	maze->nodeArray[startVertexX][startVertexY].traversed = true;
-	// Declare a stack for searching
-	std::stack<Node> depthStack;
-	// Declare and initialize to 0 an int that tracks the successor vertex indicies
-	int successorVertex = 0;
-	// Push start index into stack
-	depthStack.push(maze->nodeArray[startVertexX][startVertexY]);
-	// Loop while stack is not empty
-	while (!depthStack.empty()) {
-		// Use getNextUnvisitedVertex() to check if the top of the stack is an unvisited vertex
-		std::vector<Node> unVisitedNodes = getUnvisitedNode(depthStack.top());
-		if (unVisitedNodes.empty() == false) {
-			int randomUnVisitedNode = rand() % unVisitedNodes.size();
-			Node currentNode = unVisitedNodes[randomUnVisitedNode];
-			if (currentNode.nodeState.GetState() == 2) {
-				// Set visited node at the found index to visited
-				maze->nodeArray[currentNode.x][currentNode.y].nodeState.SetState(3);
-				maze->nodeArray[currentNode.x][currentNode.y].traversed = true;
-				// Push vertex index onto stack
-				depthStack.push(currentNode);
-			}
-			if (currentNode.x == endVertexX && currentNode.y == endVertexY) {
-				//node got the the end
+void DepthFirstSearch::SolveMaze() {
+	if (endAlgorithm == false) {
+		// Declare and initialize to 0 an int that tracks the successor vertex indicies
+		// Loop while stack is not empty
+		while (!depthStack.empty()) {
+			// Use getNextUnvisitedVertex() to check if the top of the stack is an unvisited vertex
+			std::vector<Node> unVisitedNodes = getUnvisitedNode(depthStack.top());
+			if (unVisitedNodes.empty() == false) {
+				int randomUnVisitedNode = rand() % unVisitedNodes.size();
+				Node currentNode = unVisitedNodes[randomUnVisitedNode];
+				if (currentNode.nodeState.GetState() == 2) {
+					// Set visited node at the found index to visited
+					maze->nodeArray[currentNode.x][currentNode.y].nodeState.SetState(3);
+					maze->nodeArray[currentNode.x][currentNode.y].traversed = true;
+					// Push vertex index onto stack
+					depthStack.push(currentNode);
+				}
+				if (currentNode.x == endX && currentNode.y == endY) {
+					//node got the the end
+					endAlgorithm = true;
+				}
 				return;
 			}
+			// If node is finished - pop it
+			else {
+				maze->nodeArray[depthStack.top().x][depthStack.top().y].traversed = false;
+				depthStack.pop();
+			}
 		}
-		// If node is finished - pop it
-		else {
-			maze->nodeArray[depthStack.top().x][depthStack.top().y].traversed = false;
-			depthStack.pop();
-		}
+		//no path
 	}
-	//no path
 	return;
+}
+
+void DepthFirstSearch::SetupAlgorithm(Maze* maze_, int startVertexX, int startVertexY, int endVertexX, int endVertexY, bool mazeDone) {
+	if (mazeDone == false) {
+		maze = maze_;
+		// Set the startIndex to visited
+		maze->nodeArray[startVertexX][startVertexY].nodeState.SetState(3);
+		maze->nodeArray[startVertexX][startVertexY].traversed = true;
+		// Push start index into stack
+		depthStack.push(maze->nodeArray[startVertexX][startVertexY]);
+		//set end points
+		endX = endVertexX;
+		endY = endVertexY;
+		endAlgorithm = false;
+	}
 }
 
 std::vector<Node> DepthFirstSearch::getUnvisitedNode(Node index) {

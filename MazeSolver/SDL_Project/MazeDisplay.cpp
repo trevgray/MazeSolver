@@ -18,10 +18,11 @@ MazeDisplay::~MazeDisplay() {
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
 	maze = new PrimsMaze(50);
-	maze->Generate();
+	srand((unsigned int)time(NULL));
+	dynamic_cast<PrimsMaze*>(maze)->SetupMaze(rand() % maze->GetSize(), rand() % maze->GetSize());
 
 	algorithm = new DepthFirstSearch();
-	algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0);
+	algorithmStart = false;
 	
 	//SDL Stuff
 	int w, h;
@@ -87,6 +88,16 @@ void MazeDisplay::Render() {
 	Vec3 screenCoords;
 	int windowWidth, windowHeight;
 	int currentPosX = 0, currentPosY = 0;
+	if (maze->mazeDone == false) {
+		//Generate part of the maze
+		maze->Generate();
+	}
+	else {
+	//generate the algorithm
+		algorithm->SetupAlgorithm(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0, algorithmStart);
+		algorithmStart = true;
+		algorithm->SolveMaze();
+	}
 	//getting node size on screen
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 	int nodeSizeWidth = windowWidth / maze->GetSize();

@@ -18,6 +18,7 @@ private:
 
 	Maze* maze;
 	SolvingAlgorithm* algorithm;
+	bool algorithmStart;
 public:
 	MazeDisplay(SDL_Window* sdlWindow);
 	~MazeDisplay();
