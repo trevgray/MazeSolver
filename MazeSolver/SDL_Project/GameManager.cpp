@@ -50,27 +50,28 @@ void GameManager::Run() {
 	SDL_Event sdlEvent;
 	timer->Start();
 	while (isRunning) {
-		
-		while (SDL_PollEvent(&sdlEvent)){
+
+		while (SDL_PollEvent(&sdlEvent)) {
 			if (sdlEvent.type == SDL_QUIT) {
 				isRunning = false;
-			}else if(sdlEvent.type == SDL_KEYDOWN){
-				switch (sdlEvent.key.keysym.scancode){
-					case SDL_SCANCODE_ESCAPE:
-						isRunning = false;
-						break;
-					case SDL_SCANCODE_Q:
-						isRunning = false;
-						break;
+			}
+			else if (sdlEvent.type == SDL_KEYDOWN) {
+				switch (sdlEvent.key.keysym.scancode) {
+				case SDL_SCANCODE_ESCAPE:
+					isRunning = false;
+					break;
+				case SDL_SCANCODE_Q:
+					isRunning = false;
+					break;
 
-					case SDL_SCANCODE_F10:
-						currentScene->OnDestroy();
-						delete currentScene;
-						currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
-						currentScene->OnCreate();
-						break;
-					default:
-						break;
+				case SDL_SCANCODE_F10:
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
+					currentScene->OnCreate();
+					break;
+				default:
+					break;
 				}
 			}
 			currentScene->HandleEvents(sdlEvent);
@@ -90,5 +91,6 @@ GameManager::~GameManager() {}
 void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;
 	if (timer) delete timer;
+	currentScene->OnDestroy();
 	if (currentScene) delete currentScene;
 }

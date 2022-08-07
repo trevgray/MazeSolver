@@ -8,6 +8,7 @@
 
 using namespace MATH;
 
+
 class MazeDisplay : public Scene {
 private:
 	SDL_Window* window;

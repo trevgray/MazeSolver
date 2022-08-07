@@ -17,9 +17,10 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	bool isRunning;
-	Scene *currentScene;
+	//Scene *currentScene;
 
 public:
+	Scene* currentScene;
 	GameManager();
 	~GameManager();
 	bool OnCreate();

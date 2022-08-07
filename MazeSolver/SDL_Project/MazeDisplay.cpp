@@ -12,7 +12,7 @@ MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : wallTexture(nullptr), maze(nu
 }
 
 MazeDisplay::~MazeDisplay() {
-	SDL_DestroyRenderer(renderer);
+
 }
 
 bool MazeDisplay::OnCreate() {
@@ -59,13 +59,12 @@ bool MazeDisplay::OnCreate() {
 }
 
 void MazeDisplay::OnDestroy() {
+	//if (wallTexture) delete wallTexture;
+	if (algorithm) delete algorithm;
+	//if (traversedTexture) delete traversedTexture;
+	//if (maze) delete maze;
+	//if (window) delete window;
 	SDL_DestroyRenderer(renderer);
-	delete wallTexture;
-	delete algorithm;
-	delete traversedTexture;
-	delete maze;
-	delete renderer;
-	delete window;
 }
 
 void MazeDisplay::Update(const float deltaTime) {
@@ -74,8 +73,8 @@ void MazeDisplay::Update(const float deltaTime) {
 
 
 void MazeDisplay::HandleEvents(const SDL_Event& sdlEvent) {
-	Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
-	Vec3 mouseWorldCoords = invProjectionMatrix * mouseCoords;
+	//Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
+	//Vec3 mouseWorldCoords = invProjectionMatrix * mouseCoords;
 }
 
 

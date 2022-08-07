@@ -2,6 +2,7 @@
 #include <stack>
 #include <iostream>
 
+
 void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY, int endVertexX, int endVertexY) {
 	srand((unsigned int)time(NULL));
 	maze = maze_;
