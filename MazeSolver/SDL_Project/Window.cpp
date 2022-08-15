@@ -34,7 +34,7 @@ void Window::OnDestroy(){
 	/// Kill the surface first
 	if (screenSurface) {
 		SDL_FreeSurface(screenSurface);
-		delete screenSurface;
+		delete screenSurface; 
 	}
 
 	/// Now kill the window
@@ -48,7 +48,9 @@ void Window::OnDestroy(){
 
 }
 
-Window::~Window(){}
+Window::~Window(){
+	//OnDestroy();
+}
 
 SDL_Window* Window::GetSDL_Window() {
 	return window;

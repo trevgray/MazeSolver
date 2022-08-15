@@ -1,3 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (SDL_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Main.cpp
+  Window.cpp
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Window.cpp(43,16): warning C4150: deletion of pointer to incomplete type 'SDL_Window'; no destructor called
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Window.h(4): message : see declaration of 'SDL_Window'
   SDL_Project.vcxproj -> E:\GitHub\MazeSolver\MazeSolver\Debug\MazeSolver.exe

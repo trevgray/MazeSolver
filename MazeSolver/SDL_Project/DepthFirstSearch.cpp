@@ -11,8 +11,6 @@ void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY
 	maze->nodeArray[startVertexX][startVertexY].traversed = true;
 	// Declare a stack for searching
 	std::stack<Node> depthStack;
-	// Declare and initialize to 0 an int that tracks the successor vertex indicies
-	int successorVertex = 0;
 	// Push start index into stack
 	depthStack.push(maze->nodeArray[startVertexX][startVertexY]);
 	// Loop while stack is not empty

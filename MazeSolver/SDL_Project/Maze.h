@@ -10,6 +10,12 @@ public:
 	int GetSize() {
 		return mazeSize;
 	}
-	//~Maze() { delete nodeArray; };
+	~Maze() { 
+		/*for (int x = 0; x <= mazeSize; x++) {
+			for (int y = 0; y <= mazeSize; y++) {
+				nodeArray[x][y] = Node();
+			}
+		}*/
+	};
 };
 
