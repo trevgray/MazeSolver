@@ -148,6 +148,7 @@
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="DepthFirstSearch.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="KruskalsMaze.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Body.h" />
     <ClInclude Include="DepthFirstSearch.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="KruskalsMaze.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Maze.h" />
     <ClInclude Include="MMath.h" />

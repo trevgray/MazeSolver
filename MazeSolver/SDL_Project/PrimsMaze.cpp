@@ -1,5 +1,4 @@
 #include "PrimsMaze.h"
-#include "Randomizer.h"
 #include <iostream>
 #include <cstdlib>
 
@@ -33,15 +32,9 @@ void PrimsMaze::Generate() {
 		int randomFrontierIndex = rand() % frontier.size();
 		Node randomFrontier = frontier[randomFrontierIndex];
 		frontier.erase(frontier.begin() + randomFrontierIndex); //erase it from the frontier array
-		//get a random neighbor of frontier node
-		std::vector<Node> incompleteNeightbors = NeighborNodes(randomFrontier, 0);
-		if (incompleteNeightbors.size() > 0) { //if not neighbors - move on
-			int randomNeightborsIndex = rand() % incompleteNeightbors.size();
-			Node randomNeightbor = incompleteNeightbors[randomNeightborsIndex];
-		}
-		//set the node walls
+		//set the node walls based on the random frontier
 		SetNodeWalls(randomFrontier);
-		//mark the node as done
+		//mark the node as done and add frontiers to all the valid neightbors
 		MarkNode(nodeArray[randomFrontier.x][randomFrontier.y]);
 		if (frontier.size() == 0) {
 			frontierLoop = false; //exit if the frontier vector is empty
@@ -92,7 +85,7 @@ void PrimsMaze::addFrontier(Node addedNode) {
 }
 
 void PrimsMaze::SetNodeWalls(Node markedNode) {
-	std::vector<Node> completeNeightbors = NeighborNodes(markedNode, 2); //get complete neighbors
+	std::vector<Node> completeNeightbors = NeighborNodes(markedNode, 2); //get complete neighbors around the frontier
 	if (completeNeightbors.size() > 0) { //if empty don't do anything - only applies to the first node
 		int randomNeightborsIndex = rand() % completeNeightbors.size();
 		Node randomNeightbor = completeNeightbors[randomNeightborsIndex]; //get random complete neighbor

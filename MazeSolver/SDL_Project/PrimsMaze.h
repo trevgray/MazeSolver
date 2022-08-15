@@ -13,4 +13,3 @@ public:
 	PrimsMaze(int n);
 	void Generate();
 };
-

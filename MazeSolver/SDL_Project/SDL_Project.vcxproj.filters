@@ -90,6 +90,9 @@
     <ClCompile Include="DepthFirstSearch.cpp">
       <Filter>Source Files\SolvingAlgorithms</Filter>
     </ClCompile>
+    <ClCompile Include="KruskalsMaze.cpp">
+      <Filter>Source Files\Maze</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="DepthFirstSearch.h">
       <Filter>Header Files\SolvingAlgorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="KruskalsMaze.h">
+      <Filter>Header Files\Maze</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
