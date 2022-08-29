@@ -17,7 +17,7 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	maze = new PrimsMaze(50);
+	maze = new KruskalsMaze(10);
 	maze->Generate();
 
 	algorithm = new DepthFirstSearch();

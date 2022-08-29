@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include <SDL.h>
 #include <vector>
-#include "PrimsMaze.h"
+#include "KruskalsMaze.h"
 #include "DepthFirstSearch.h"
 
 using namespace MATH;

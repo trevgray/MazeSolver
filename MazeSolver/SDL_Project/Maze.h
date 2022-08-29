@@ -5,7 +5,7 @@ class Maze {
 protected:
 	int mazeSize;
 public:
-	Node nodeArray[100][100];
+	Node nodeArray[50][50];
 	virtual void Generate() = 0;
 	int GetSize() {
 		return mazeSize;
