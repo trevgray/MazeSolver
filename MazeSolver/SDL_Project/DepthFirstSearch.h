@@ -7,6 +7,6 @@ public:
 	std::vector<Node> getUnvisitedNode(Node index);
 	//Node getNextUnvisitedNode(Node index);
 	DepthFirstSearch();
-	~DepthFirstSearch();
+	//~DepthFirstSearch();
 };
 

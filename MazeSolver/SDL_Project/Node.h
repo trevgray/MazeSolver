@@ -12,5 +12,6 @@ public:
 	bool traversed;
 	Node();
 	Node(int x_, int y_);
+	~Node();
 };
 

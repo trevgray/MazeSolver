@@ -17,7 +17,7 @@ MazeDisplay::~MazeDisplay() {
 
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	maze = new KruskalsMaze(10);
+	maze = new KruskalsMaze(20);
 	maze->Generate();
 
 	algorithm = new DepthFirstSearch();
@@ -60,9 +60,11 @@ bool MazeDisplay::OnCreate() {
 
 void MazeDisplay::OnDestroy() {
 	//if (wallTexture) delete wallTexture;
+	SDL_DestroyTexture(wallTexture);
 	if (algorithm) delete algorithm;
 	//if (traversedTexture) delete traversedTexture;
-	//if (maze) delete maze;
+	SDL_DestroyTexture(traversedTexture);
+	//if (maze) delete maze; //coming from the algorithm deconstuctor
 	//if (window) delete window;
 	SDL_DestroyRenderer(renderer);
 }

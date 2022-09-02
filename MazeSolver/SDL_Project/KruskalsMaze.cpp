@@ -8,10 +8,13 @@ KruskalsMaze::KruskalsMaze() {
 	for (int x = 0; x < 5; x++) {
 		for (int y = 0; y < 5; y++) {
 			nodeArray[x][y] = Node(x, y);
-
+			//Add all nodes to their own array
 			std::vector<Node> newSet;
 			newSet.push_back(nodeArray[x][y]);
 			nodeSets.push_back(newSet);
+			//Setting up Unique Randoms Arrays
+			uniqueRandomXValues.push_back(x);
+			uniqueRandomYValues.push_back(y);
 		}
 	}
 }
@@ -23,14 +26,13 @@ KruskalsMaze::KruskalsMaze(int n) {
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
 			nodeArray[x][y] = Node(x, y);
-
+			//Add all nodes to their own array
 			std::vector<Node> newSet;
 			newSet.push_back(nodeArray[x][y]);
 			nodeSets.push_back(newSet);
-
-			//Unique Randoms
-			uniqueRandomNums.push_back(x + (10 * y));
-			//std::cout << x + (10 * y) << std::endl;
+			//Setting up Unique Randoms Arrays
+			uniqueRandomXValues.push_back(x);
+			uniqueRandomYValues.push_back(y);
 		}
 	}
 }
@@ -38,32 +40,50 @@ KruskalsMaze::KruskalsMaze(int n) {
 void KruskalsMaze::Generate() {
 	srand((unsigned int)time(NULL));
 
-	//mark random node
-	/*while (nodeSets.size() > 1) {
-		int randomIndex = uniqueRandomNums[rand() % uniqueRandomNums.size()];
-
-
-	}*/
-	//completely random
+	//generate using unique random numbers
+	//loop until their is only 1 set left
 	while (nodeSets.size() > 1) {
 		//std::cout << nodeSets.size() << std::endl;
-		int x = rand() % mazeSize;
-		int y = rand() % mazeSize;
-		MarkNode(nodeArray[x][y]);
+		//Get a random node
+		int randomIndex = rand() % uniqueRandomXValues.size();
+		//Mark the node for maze evaluation
+		MarkNode(nodeArray[uniqueRandomXValues[randomIndex]][uniqueRandomYValues[randomIndex]], randomIndex);
 	}
+	//generate using completely random
+	//while (nodeSets.size() > 1) {
+	//	//std::cout << nodeSets.size() << std::endl;
+	//	int x = rand() % mazeSize;
+	//	int y = rand() % mazeSize;
+	//	MarkNode(nodeArray[x][y]);
+	//}
 }
 
-void KruskalsMaze::MarkNode(Node markedNode) {
-	//nodeArray[markedNode.x][markedNode.y].traversed = true;
-	nodeArray[markedNode.x][markedNode.y].nodeState.SetState(1);
+KruskalsMaze::~KruskalsMaze() {
+	uniqueRandomXValues.clear();
+	uniqueRandomYValues.clear();
+	nodeSets.clear();
+	lastNodeSetIndex = 0;
+}
 
-	std::vector<Node> workingNeightbors = NeighborNodes(markedNode, 1); //get working neighbors around the random node
+void KruskalsMaze::MarkNode(Node markedNode, int randomIndex) {
+	//set the state of the node to working
+	nodeArray[markedNode.x][markedNode.y].nodeState.SetState(1);
+	//get working neighbors around the random node
+	std::vector<Node> workingNeightbors = NeighborNodes(markedNode, 1);
 	if (workingNeightbors.size() > 0) { //if empty don't do anything
+		//get the neightbors that are contained in different sets
 		std::vector<Node> differentSetNeightbors = NodeSetCheck(workingNeightbors, markedNode);
-		if (differentSetNeightbors.size() > 0) { //if empty don't do anything
+		if (differentSetNeightbors.size() > 0) { //if empty then there is no more need to evaluate this node again
+			//Get a random different set neightbor
 			int randomDifferentSetNeightborIndex = rand() % differentSetNeightbors.size();
 			Node randomDifferentSetNeightbor = differentSetNeightbors[randomDifferentSetNeightborIndex];
+			//Remove the wall between the two nodes and add the nodes to the same set
 			RemoveWall(markedNode, randomDifferentSetNeightbor);
+		}
+		else {
+			//Remove the node from being evaluating again
+			uniqueRandomXValues.erase(uniqueRandomXValues.begin() + randomIndex);
+			uniqueRandomYValues.erase(uniqueRandomYValues.begin() + randomIndex);
 		}
 	}
 }
@@ -86,28 +106,26 @@ void KruskalsMaze::MarkNode(Node markedNode) {
 //}
 
 void KruskalsMaze::AddNodeToSet(Node nodeToAdd, Node nodeWithSet) {
+	//Get node set of both of the nodes inside the maze - the order does not matter
 	std::vector<Node> currentSetNodeSet = GetNodeSet(nodeToAdd);
 	int previousNodeSet = lastNodeSetIndex;
 
 	GetNodeSet(nodeWithSet);
 	int newNodeSet = lastNodeSetIndex;
 
+	//Move one of the node sets into the other node's set - basically combine both of the sets together
 	for (int index = 0; index < currentSetNodeSet.size(); index++) {
 		nodeSets[newNodeSet].push_back(nodeSets[previousNodeSet][index]);
 	}
-
-	nodeSets[newNodeSet].push_back(nodeArray[nodeToAdd.x][nodeToAdd.y]);
-
+	//clear and erase the duplicate obsolete node set
 	nodeSets[previousNodeSet].clear();
 	nodeSets.erase(nodeSets.begin() + previousNodeSet);
 }
 
 void KruskalsMaze::RemoveWall(Node markedNode, Node randomDifferentSetNeightbor) {
-	//start setting the set of the removed wall nodes to each other
-	//RemoveNodeFromSet(randomDifferentSetNeightbor);
+	//Add the two nodes to the same set
 	AddNodeToSet(randomDifferentSetNeightbor, markedNode);
-
-	GetNodeSet(markedNode);
+	//Remove the wall between the nodes
 	if (randomDifferentSetNeightbor.x < markedNode.x) { //if the neighbor is to the left of the node - remove the walls between the nodes
 		nodeArray[markedNode.x][markedNode.y].leftWall = false;
 		nodeArray[randomDifferentSetNeightbor.x][randomDifferentSetNeightbor.y].rightWall = false;
@@ -127,25 +145,33 @@ void KruskalsMaze::RemoveWall(Node markedNode, Node randomDifferentSetNeightbor)
 }
 
 std::vector<Node> KruskalsMaze::NodeSetCheck(std::vector<Node> unCheckedNodes, Node markedNode) {
+	//get the set of the marked node
 	std::vector<Node> markedNodeSet = GetNodeSet(markedNode);
-
+	//Make a array for the checked nodes to be stored in
 	std::vector<Node> checkedNodes;
+	//for each of the unchecked nodes
 	for (Node currentNode : unCheckedNodes) {
+		//get the set the node is contained in
 		std::vector<Node> currentNodeSet = GetNodeSet(currentNode);
-		//if (GetNodeSet(currentNode) != GetNodeSet(markedNode)) {
+		//Check if the nodes are contained in the same set - we can't do "if (GetNodeSet(currentNode) != GetNodeSet(markedNode)) {" so we check the x and y of the first node in the set
 		if (currentNodeSet[0].x != markedNodeSet[0].x || currentNodeSet[0].y != markedNodeSet[0].y) {
-			//std::cout << "currentNodeSet = " << currentNodeSet[0].x << " " << currentNodeSet[0].y << " " << "markedNodeSet = " << markedNodeSet[0].x << " " << markedNodeSet[0].y << std::endl;
+			//if the nodes are contained in different sets - add them to the array
 			checkedNodes.push_back(currentNode);
 		}
 	}
 	return checkedNodes;
 }
 
-std::vector<Node> KruskalsMaze::GetNodeSet(Node node) { //easy optimzation
+std::vector<Node> KruskalsMaze::GetNodeSet(Node node) { //this running as On^2 - if we store the index of the node set inside the node, this maze would generate way faster
+	//reset the lost node set index
 	lastNodeSetIndex = -1;
+	//loop though all node arrays inside the node sets
 	for (std::vector<Node> nodeArray : nodeSets) {
+		//increment the last node set index
 		lastNodeSetIndex++;
+		//loop though all nodes inside the node array
 		for (Node currentNode : nodeArray) {
+			//if the x and y of the node are equal to the node inside the node array - then we found the proper nodeSet
 			if (currentNode.x == node.x && currentNode.y == node.y) {
 				return nodeArray;
 			}

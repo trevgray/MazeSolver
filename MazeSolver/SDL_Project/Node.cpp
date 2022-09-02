@@ -14,3 +14,9 @@ Node::Node(int x_, int y_) {
 	nodeState.SetState(0);
 	traversed = false;
 }
+
+Node::~Node() {
+	x = y = 0;
+	topWall = bottomWall = leftWall = rightWall = traversed = 0;
+	nodeState.~State();
+}

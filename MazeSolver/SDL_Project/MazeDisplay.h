@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <vector>
 #include "KruskalsMaze.h"
+#include "PrimsMaze.h"
 #include "DepthFirstSearch.h"
 
 using namespace MATH;

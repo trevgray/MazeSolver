@@ -1,5 +1,6 @@
 #pragma once
 #include "Node.h"
+#include <iostream>
 
 class Maze {
 protected:
@@ -10,12 +11,12 @@ public:
 	int GetSize() {
 		return mazeSize;
 	}
-	~Maze() { 
-		/*for (int x = 0; x <= mazeSize; x++) {
+	virtual ~Maze() {
+		for (int x = 0; x <= mazeSize; x++) {
 			for (int y = 0; y <= mazeSize; y++) {
-				nodeArray[x][y] = Node();
+				nodeArray[x][y].~Node();
 			}
-		}*/
+		}
 	};
 };
 
