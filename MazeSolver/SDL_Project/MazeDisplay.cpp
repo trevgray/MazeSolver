@@ -2,26 +2,39 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Randomizer.h"
-#include <iostream>
 #include "VMath.h"
 using namespace MATH;
 
-MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_) : wallTexture(nullptr), maze(nullptr), algorithm(nullptr), traversedTexture(nullptr) {
+MazeDisplay::MazeDisplay(SDL_Window* sdlWindow_, UserInterface& interfaceRef) : wallTexture(nullptr), maze(nullptr), algorithm(nullptr), traversedTexture(nullptr) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	interface = interfaceRef;
 }
 
 MazeDisplay::~MazeDisplay() {
 
 }
 
+void MazeDisplay::SetUpMazeAndAlgorithm() {
+	//Mazes
+	if (interface.GetMazeIndex() == 0) { //Prims Maze
+		maze = new PrimsMaze(interface.GetMazeSize());
+	}
+	if (interface.GetMazeIndex() == 1) { //Kruskal Maze
+		maze = new KruskalsMaze(interface.GetMazeSize());
+	}
+	//Solving
+	if (interface.GetAlgorithmIndex() == 0) { //Depth first search
+		algorithm = new DepthFirstSearch();
+	}
+	maze->Generate();
+	algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0);
+}
+
 bool MazeDisplay::OnCreate() {
 	//Maze Stuff
-	maze = new KruskalsMaze(20);
-	maze->Generate();
-
-	algorithm = new DepthFirstSearch();
-	algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0);
+	SetUpMazeAndAlgorithm();
 	
 	//SDL Stuff
 	int w, h;
@@ -85,7 +98,6 @@ void MazeDisplay::Render() {
 	SDL_RenderClear(renderer);
 	SDL_Rect currentSquare;
 	SDL_Rect currentWall;
-	Vec3 screenCoords;
 	int windowWidth, windowHeight;
 	int currentPosX = 0, currentPosY = 0;
 	//getting node size on screen

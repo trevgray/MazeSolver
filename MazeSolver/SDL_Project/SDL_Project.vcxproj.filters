@@ -152,5 +152,8 @@
     <ClInclude Include="KruskalsMaze.h">
       <Filter>Header Files\Maze</Filter>
     </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

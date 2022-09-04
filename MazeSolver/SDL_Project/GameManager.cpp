@@ -4,11 +4,20 @@
 #include "MazeDisplay.h"
 #include <iostream>
 
-GameManager::GameManager() {
+//GameManager::GameManager() {
+//	windowPtr = nullptr;
+//	timer = nullptr;
+//	isRunning = true;
+//	currentScene = nullptr;
+//}
+
+GameManager::GameManager(UserInterface& interfaceRef) {
 	windowPtr = nullptr;
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+
+	interface = interfaceRef;
 }
 
 
@@ -32,7 +41,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
+	currentScene = new MazeDisplay(windowPtr->GetSDL_Window(), interface);
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -67,7 +76,7 @@ void GameManager::Run() {
 				case SDL_SCANCODE_F10:
 					currentScene->OnDestroy();
 					delete currentScene;
-					currentScene = new MazeDisplay(windowPtr->GetSDL_Window());
+					currentScene = new MazeDisplay(windowPtr->GetSDL_Window(), interface);
 					currentScene->OnCreate();
 					break;
 				default:
@@ -81,8 +90,8 @@ void GameManager::Run() {
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 
-		/// Keeep the event loop running at a proper rate
-		SDL_Delay(timer->GetSleepTime(60)); ///60 frames per sec
+		//Keep the event loop running at a proper rate
+		SDL_Delay(timer->GetSleepTime(60));
 	}
 }
 

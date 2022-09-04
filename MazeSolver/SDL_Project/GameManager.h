@@ -2,6 +2,7 @@
 #define GAMEMANAGER_H
 #include <SDL.h>
 #include "Scene.h"
+#include "UserInterface.h"
 
 class GameManager {
 private:
@@ -17,11 +18,11 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	bool isRunning;
-	//Scene *currentScene;
+	Scene *currentScene;
 
+	UserInterface interface;
 public:
-	Scene* currentScene;
-	GameManager();
+	GameManager(UserInterface& interfaceRef);
 	~GameManager();
 	bool OnCreate();
 	void OnDestroy();

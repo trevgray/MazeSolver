@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 KruskalsMaze::KruskalsMaze() {
+	srand((unsigned int)time(NULL));
 	lastNodeSetIndex = -1;
 	mazeSize = 5;
 	for (int x = 0; x < 5; x++) {
@@ -20,9 +21,9 @@ KruskalsMaze::KruskalsMaze() {
 }
 
 KruskalsMaze::KruskalsMaze(int n) {
+	srand((unsigned int)time(NULL));
 	lastNodeSetIndex = -1;
 	mazeSize = n; //generate the maze
-
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -38,8 +39,6 @@ KruskalsMaze::KruskalsMaze(int n) {
 }
 
 void KruskalsMaze::Generate() {
-	srand((unsigned int)time(NULL));
-
 	//generate using unique random numbers
 	//loop until their is only 1 set left
 	while (nodeSets.size() > 1) {
@@ -112,7 +111,6 @@ void KruskalsMaze::AddNodeToSet(Node nodeToAdd, Node nodeWithSet) {
 
 	GetNodeSet(nodeWithSet);
 	int newNodeSet = lastNodeSetIndex;
-
 	//Move one of the node sets into the other node's set - basically combine both of the sets together
 	for (int index = 0; index < currentSetNodeSet.size(); index++) {
 		nodeSets[newNodeSet].push_back(nodeSets[previousNodeSet][index]);

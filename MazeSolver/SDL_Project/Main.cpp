@@ -1,16 +1,19 @@
-#include <iostream>
 #include "GameManager.h"
+#include "UserInterface.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#ifdef _DEBUG
-#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#define new DEBUG_NEW
-#endif
+//#ifdef _DEBUG
+//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+//#define new DEBUG_NEW
+//#endif
 
 int main(int argc, char* args[]) { /// Standard C-style entry point, you need to use it
-
-	GameManager* ptr = new GameManager();
+	//interface
+	UserInterface inferface;
+	inferface.runDisplay();
+	//Game Manager 
+	GameManager* ptr = new GameManager(inferface);
 	bool status  = ptr->OnCreate();
 	if (status == true) {
 		ptr->Run();

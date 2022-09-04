@@ -7,6 +7,8 @@
 #include "PrimsMaze.h"
 #include "DepthFirstSearch.h"
 
+#include "UserInterface.h"
+
 using namespace MATH;
 
 
@@ -20,9 +22,12 @@ private:
 
 	Maze* maze;
 	SolvingAlgorithm* algorithm;
+
+	UserInterface interface;
 public:
-	MazeDisplay(SDL_Window* sdlWindow);
+	MazeDisplay(SDL_Window* sdlWindow, UserInterface& interfaceRef);
 	~MazeDisplay();
+	void SetUpMazeAndAlgorithm();
 	bool OnCreate();
 	void OnDestroy();
 	void Update(const float time);

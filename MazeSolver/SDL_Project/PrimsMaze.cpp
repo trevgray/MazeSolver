@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 PrimsMaze::PrimsMaze() {
+	srand((unsigned int)time(NULL));
 	mazeSize = 5;
 	for (int x = 0; x < 5; x++) {
 		for (int y = 0; y < 5; y++) {
@@ -12,6 +13,7 @@ PrimsMaze::PrimsMaze() {
 }
 
 PrimsMaze::PrimsMaze(int n) {
+	srand((unsigned int)time(NULL));
 	mazeSize = n; //generate the maze
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
@@ -21,7 +23,6 @@ PrimsMaze::PrimsMaze(int n) {
 }
 
 void PrimsMaze::Generate() {
-	srand((unsigned int)time(NULL));
 	bool frontierLoop = true;
 	//mark random node
 	int x = rand() % mazeSize;
