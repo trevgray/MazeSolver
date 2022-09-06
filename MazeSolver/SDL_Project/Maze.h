@@ -7,7 +7,7 @@ protected:
 	int mazeSize;
 	bool mazeCompleted;
 public:
-	Node nodeArray[50][50];
+	Node nodeArray[51][51];
 	virtual void Generate(bool gradualGeneration) = 0;
 	int GetSize() {
 		return mazeSize;

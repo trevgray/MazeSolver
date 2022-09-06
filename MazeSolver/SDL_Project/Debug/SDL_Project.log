@@ -1,7 +1,10 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (SDL_Project.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  DepthFirstSearch.cpp
   GameManager.cpp
-  Main.cpp
+  KruskalsMaze.cpp
+E:\GitHub\MazeSolver\MazeSolver\SDL_Project\KruskalsMaze.cpp(121,28): warning C4018: '<': signed/unsigned mismatch
   MazeDisplay.cpp
 E:\GitHub\MazeSolver\MazeSolver\SDL_Project\Randomizer.h(58,40): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  PrimsMaze.cpp
   Generating Code...
   SDL_Project.vcxproj -> E:\GitHub\MazeSolver\MazeSolver\Debug\MazeSolver.exe
