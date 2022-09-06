@@ -30,6 +30,7 @@ public:
 	void SetUpMazeAndAlgorithm();
 	bool OnCreate();
 	void OnDestroy();
+	void GenerateMazeAndRunAlgorithm();
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);

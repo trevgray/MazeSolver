@@ -20,6 +20,6 @@ private:
 public:
 	KruskalsMaze();
 	KruskalsMaze(int n);
-	void Generate();
+	void Generate(bool gradualGenerationBool);
 	~KruskalsMaze();
 };

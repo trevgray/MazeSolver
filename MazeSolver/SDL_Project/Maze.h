@@ -5,11 +5,15 @@
 class Maze {
 protected:
 	int mazeSize;
+	bool mazeCompleted;
 public:
 	Node nodeArray[50][50];
-	virtual void Generate() = 0;
+	virtual void Generate(bool gradualGeneration) = 0;
 	int GetSize() {
 		return mazeSize;
+	}
+	bool GetCompleted() {
+		return mazeCompleted;
 	}
 	virtual ~Maze() {
 		for (int x = 0; x <= mazeSize; x++) {

@@ -5,6 +5,8 @@
 PrimsMaze::PrimsMaze() {
 	srand((unsigned int)time(NULL));
 	mazeSize = 5;
+	mazeCompleted = false;
+	firstLoop = true;
 	for (int x = 0; x < 5; x++) {
 		for (int y = 0; y < 5; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -15,6 +17,8 @@ PrimsMaze::PrimsMaze() {
 PrimsMaze::PrimsMaze(int n) {
 	srand((unsigned int)time(NULL));
 	mazeSize = n; //generate the maze
+	mazeCompleted = false;
+	firstLoop = true;
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -22,12 +26,15 @@ PrimsMaze::PrimsMaze(int n) {
 	}
 }
 
-void PrimsMaze::Generate() {
+void PrimsMaze::Generate(bool gradualGenerationBool) {
 	bool frontierLoop = true;
-	//mark random node
-	int x = rand() % mazeSize;
-	int y = rand() % mazeSize;
-	MarkNode(nodeArray[x][y]);
+	if (firstLoop == true) {
+		firstLoop = false;
+		//mark random node
+		int x = rand() % mazeSize;
+		int y = rand() % mazeSize;
+		MarkNode(nodeArray[x][y]);
+	}
 	while (frontierLoop == true) {
 		//get random frontier node
 		int randomFrontierIndex = rand() % frontier.size();
@@ -39,6 +46,11 @@ void PrimsMaze::Generate() {
 		MarkNode(nodeArray[randomFrontier.x][randomFrontier.y]);
 		if (frontier.size() == 0) {
 			frontierLoop = false; //exit if the frontier vector is empty
+			mazeCompleted = true;
+		}
+		//--Gradual Generation Section--
+		if (gradualGenerationBool == true) {
+			return;
 		}
 	}
 }

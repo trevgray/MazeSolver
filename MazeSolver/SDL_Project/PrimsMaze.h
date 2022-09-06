@@ -8,8 +8,10 @@ private:
 	std::vector<Node> NeighborNodes(Node markedNode, int function);
 	void addFrontier(Node addedNode);
 	void SetNodeWalls(Node markedNode);
+
+	bool firstLoop;
 public:
 	PrimsMaze();
 	PrimsMaze(int n);
-	void Generate();
+	void Generate(bool gradualGenerationBool);
 };

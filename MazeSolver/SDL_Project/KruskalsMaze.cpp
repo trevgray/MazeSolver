@@ -6,6 +6,7 @@ KruskalsMaze::KruskalsMaze() {
 	srand((unsigned int)time(NULL));
 	lastNodeSetIndex = -1;
 	mazeSize = 5;
+	mazeCompleted = false;
 	for (int x = 0; x < 5; x++) {
 		for (int y = 0; y < 5; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -24,6 +25,7 @@ KruskalsMaze::KruskalsMaze(int n) {
 	srand((unsigned int)time(NULL));
 	lastNodeSetIndex = -1;
 	mazeSize = n; //generate the maze
+	mazeCompleted = false;
 	for (int x = 0; x < n; x++) {
 		for (int y = 0; y < n; y++) {
 			nodeArray[x][y] = Node(x, y);
@@ -38,7 +40,7 @@ KruskalsMaze::KruskalsMaze(int n) {
 	}
 }
 
-void KruskalsMaze::Generate() {
+void KruskalsMaze::Generate(bool gradualGenerationBool) {
 	//generate using unique random numbers
 	//loop until their is only 1 set left
 	while (nodeSets.size() > 1) {
@@ -47,6 +49,9 @@ void KruskalsMaze::Generate() {
 		int randomIndex = rand() % uniqueRandomXValues.size();
 		//Mark the node for maze evaluation
 		MarkNode(nodeArray[uniqueRandomXValues[randomIndex]][uniqueRandomYValues[randomIndex]], randomIndex);
+		if (gradualGenerationBool == true) {
+			return;
+		}
 	}
 	//generate using completely random
 	//while (nodeSets.size() > 1) {
@@ -55,6 +60,7 @@ void KruskalsMaze::Generate() {
 	//	int y = rand() % mazeSize;
 	//	MarkNode(nodeArray[x][y]);
 	//}
+	mazeCompleted = true;
 }
 
 KruskalsMaze::~KruskalsMaze() {

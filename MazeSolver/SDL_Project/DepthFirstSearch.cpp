@@ -1,24 +1,23 @@
 #include "DepthFirstSearch.h"
-#include <stack>
 #include <iostream>
 
 
-void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY, int endVertexX, int endVertexY) {
-	srand((unsigned int)time(NULL));
-	maze = maze_;
-	//reset node states to 0 in nodeArray
-	for (int x = 0; x < maze->GetSize(); x++) {
-		for (int y = 0; y < maze->GetSize(); y++) {
-			maze->nodeArray[x][y].nodeState.SetState(0);
+void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY, int endVertexX, int endVertexY, bool gradualGenerationBool) {
+	if (firstLoop == true) {
+		firstLoop = false;
+		maze = maze_;
+		//reset node states to 0 in nodeArray
+		for (int x = 0; x < maze->GetSize(); x++) {
+			for (int y = 0; y < maze->GetSize(); y++) {
+				maze->nodeArray[x][y].nodeState.SetState(0);
+			}
 		}
+		// Set the startIndex to visited
+		maze->nodeArray[startVertexX][startVertexY].nodeState.SetState(1);
+		maze->nodeArray[startVertexX][startVertexY].traversed = true;
+		// Push start index into stack
+		depthStack.push(maze->nodeArray[startVertexX][startVertexY]);
 	}
-	// Set the startIndex to visited
-	maze->nodeArray[startVertexX][startVertexY].nodeState.SetState(1);
-	maze->nodeArray[startVertexX][startVertexY].traversed = true;
-	// Declare a stack for searching
-	std::stack<Node> depthStack;
-	// Push start index into stack
-	depthStack.push(maze->nodeArray[startVertexX][startVertexY]);
 	// Loop while stack is not empty
 	while (!depthStack.empty()) {
 		// Use getNextUnvisitedVertex() to check if the top of the stack is an unvisited vertex
@@ -35,6 +34,10 @@ void DepthFirstSearch::SolveMaze(Maze* maze_, int startVertexX, int startVertexY
 			}
 			if (currentNode.x == endVertexX && currentNode.y == endVertexY) {
 				//node got the the end
+				searchComplete = true;
+				return;
+			}
+			if (gradualGenerationBool == true) {
 				return;
 			}
 		}
@@ -66,9 +69,12 @@ std::vector<Node> DepthFirstSearch::getUnvisitedNode(Node index) {
 }
 
 DepthFirstSearch::DepthFirstSearch() {
+	srand((unsigned int)time(NULL));
 	maze = nullptr;
+	searchComplete = false;
+	firstLoop = true;
 }
 
-//DepthFirstSearch::~DepthFirstSearch() {
-//	if (maze) { delete maze; }
-//}
+DepthFirstSearch::~DepthFirstSearch() {
+
+}

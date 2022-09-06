@@ -28,8 +28,6 @@ void MazeDisplay::SetUpMazeAndAlgorithm() {
 	if (interface.GetAlgorithmIndex() == 0) { //Depth first search
 		algorithm = new DepthFirstSearch();
 	}
-	maze->Generate();
-	algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0);
 }
 
 bool MazeDisplay::OnCreate() {
@@ -82,8 +80,20 @@ void MazeDisplay::OnDestroy() {
 	SDL_DestroyRenderer(renderer);
 }
 
-void MazeDisplay::Update(const float deltaTime) {
+void MazeDisplay::GenerateMazeAndRunAlgorithm() {
+	if (maze->GetCompleted() == false && interface.GetSkipMazeGenBool() == true) {
+		maze->Generate(false);
+	}
+	else if (maze->GetCompleted() == false) {
+		maze->Generate(interface.GetGradualGenerationBool());
+	}
+	else if (algorithm->GetCompleted() == false) {
+		algorithm->SolveMaze(maze, 0, maze->GetSize() - 1, maze->GetSize() - 1, 0, interface.GetGradualGenerationBool());
+	}
+}
 
+void MazeDisplay::Update(const float deltaTime) {
+	GenerateMazeAndRunAlgorithm();
 }
 
 
